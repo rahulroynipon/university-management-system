@@ -1,6 +1,7 @@
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa6";
 import { BsInstagram } from "react-icons/bs";
 import shortLogo from "@/assets/short-logo.png";
+import quickLinks from "@/data/navitem.json";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,13 +21,6 @@ const socialIcons = [
     link: "https://www.instagram.com/cityuniversity.ac.bd/",
     name: "Instagram",
   },
-];
-
-const quickLinks = [
-  { name: "About Us", link: "/about" },
-  { name: "Admission", link: "/admission" },
-  { name: "Departments", link: "/departments" },
-  { name: "Contact", link: "/contact" },
 ];
 
 const devloperInfo = [
