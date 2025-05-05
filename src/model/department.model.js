@@ -2,10 +2,20 @@ import mongoose, { Schema } from "mongoose";
 
 const departmentSchema = new Schema(
   {
+    _id: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: [true, "Department name is required"],
       trim: true,
+    },
+    icon: {
+      type: String,
+      required: [true, "Department icon is required"],
     },
     description: {
       type: String,
@@ -17,6 +27,7 @@ const departmentSchema = new Schema(
     },
   },
   {
+    _id: true,
     timestamps: true,
   }
 );

@@ -2,6 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
+    _id: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: [true, "Name is required"],
@@ -24,12 +30,9 @@ const userSchema = new Schema(
       enum: ["admin", "student", "teacher"],
       default: "student",
     },
-    departmentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Department",
-    },
   },
   {
+    _id: true,
     timestamps: true,
   }
 );
