@@ -1,4 +1,6 @@
+import User from "@/models/user.model";
 import mongoose from "mongoose";
+import { initializeAdmin } from "./initialize";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.DB_NAME;
@@ -9,7 +11,7 @@ if (!MONGODB_URI || !DB_NAME) {
 
 let isConnected = false;
 
-export async function dbConnect() {
+export default async function dbConnect() {
   if (isConnected) {
     console.log("Already connected to Database");
     return;
@@ -17,16 +19,18 @@ export async function dbConnect() {
 
   try {
     const db = await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: DB_NAME,
-      useCreateIndex: true,
     });
 
     isConnected = db.connections[0].readyState === 1;
 
     if (isConnected) {
       console.log("Connected to MongoDB");
+      const adminExist = await User.findOne({ email: process.env.ADMIN_EMAIL });
+      if (!adminExist) {
+        await User.create(initializeAdmin());
+        console.log("Admin created");
+      }
     } else {
       console.log("Database connection not ready");
     }

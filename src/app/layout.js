@@ -1,7 +1,12 @@
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { usePathname } from "next/navigation";
+import { Toaster } from "sonner";
+import useMobile from "@/hook/useMobile";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,34 +18,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "City University | Empowering Future Leaders",
-  description:
-    "City University offers world-class education, research, and student life opportunities. Join a vibrant campus community and take the next step in your academic journey.",
-  keywords: [
-    "City University",
-    "Higher Education",
-    "University in Bangladesh",
-    "Student Life",
-    "Academic Programs",
-    "Research",
-    "Admissions",
-    "Campus Facilities",
-    "Scholarships",
-    "Engineering and Business Studies"
-  ],
-};
-
-
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isHidden = pathname.startsWith("/dashboard");
+  const isMobile = useMobile();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
+        <Toaster
+          position={isMobile ? "top-center" : "bottom-right"}
+          duration={3000}
+          closeButton
+          richColors
+          gutter={8}
+        />
+        {!isHidden ? <Header /> : null}
         <main>{children}</main>
-        <Footer />
+        {!isHidden ? <Footer /> : null}
       </body>
     </html>
   );

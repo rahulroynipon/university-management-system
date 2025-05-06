@@ -42,13 +42,13 @@ export default function About() {
         <p>
           What truly distinguishes City University is not just its
           infrastructure, but its commitment to a rich cultural and
-          research-oriented environment. The university promotes a "Culture of
-          Excellence" through vibrant celebrations of national and international
-          festivals. Students actively participate in debates, programming
-          contests, and research workshops. The university hosts five dynamic
-          clubs: Career Development Club, Debating Club, Cultural Club, Sports
-          Club, and Magazine Club. One of our proud achievements is this very
-          website—developed by a talented student, Md. Toufecul Islam.
+          research-oriented environment. The university promotes a &quot;Culture
+          of Excellence&quot; through vibrant celebrations of national and
+          international festivals. Students actively participate in debates,
+          programming contests, and research workshops. The university hosts
+          five dynamic clubs: Career Development Club, Debating Club, Cultural
+          Club, Sports Club, and Magazine Club. One of our proud achievements is
+          this very website—developed by a talented student, Md. Toufecul Islam.
         </p>
 
         <p>

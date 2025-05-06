@@ -1,13 +1,8 @@
 import mongoose, { Schema } from "mongoose";
+import slugify from "slugify";
 
 const departmentSchema = new Schema(
   {
-    _id: {
-      type: String,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
     name: {
       type: String,
       required: [true, "Department name is required"],
@@ -21,16 +16,18 @@ const departmentSchema = new Schema(
       type: String,
       required: [true, "Department description is required"],
     },
-    head: {
-      type: String,
-      required: [true, "Department head is required"],
-    },
   },
   {
-    _id: true,
     timestamps: true,
   }
 );
+
+batchSchema.pre("validate", function (next) {
+  if (!this._id || this.isModified("name")) {
+    this._id = slugify(this.name, { lower: true, strict: true });
+  }
+  next();
+});
 
 const Department =
   mongoose.models.Department || mongoose.model("Department", departmentSchema);

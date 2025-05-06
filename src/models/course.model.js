@@ -2,12 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const courseSchema = new Schema(
   {
-    _id: {
-      type: String,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
     name: {
       type: String,
       required: [true, "Course name is required"],
@@ -24,7 +18,7 @@ const courseSchema = new Schema(
       required: [true, "Course credits are required"],
     },
     departmentId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: "Department",
       required: [true, "Department ID is required"],
     },

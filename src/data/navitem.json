@@ -12,6 +12,10 @@
     "link": "/departments"
   },
   {
+    "name": "Student Portal",
+    "link": "/login"
+  },
+  {
     "name": "Contact Us",
     "link": "/contact-us"
   }

@@ -1,13 +1,8 @@
 import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
   {
-    _id: {
-      type: String,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
     name: {
       type: String,
       required: [true, "Name is required"],
@@ -32,10 +27,24 @@ const userSchema = new Schema(
     },
   },
   {
-    _id: true,
     timestamps: true,
   }
 );
+
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign(
+    { _id: this._id, role: this.role },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: process.env.TOKEN_EXPIRE,
+    }
+  );
+  return token;
+};
+
+userSchema.methods.isPasswordMatch = function (password) {
+  return this.password === password;
+};
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

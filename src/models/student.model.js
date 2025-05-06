@@ -3,14 +3,8 @@ import User from "./user.model.js";
 
 const studentSchema = new Schema(
   {
-    studentId: {
-      type: String,
-      required: [true, "Student ID is required"],
-      unique: true,
-      trim: true,
-    },
     departmentId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: "Department",
       required: [true, "Department ID is required"],
     },

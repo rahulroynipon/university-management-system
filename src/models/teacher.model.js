@@ -3,20 +3,24 @@ import User from "./user.model.js";
 
 const teacherSchema = new Schema(
   {
-    employeeId: {
+    rank: {
       type: String,
-      required: [true, "Employee ID is required"],
-      unique: true,
-      trim: true,
+      enum: [
+        "lecturer",
+        "associate professor",
+        "professor",
+        "head of department",
+      ],
+      default: "lecturer",
     },
     departmentId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: "Department",
       required: [true, "Department ID is required"],
     },
     courses: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: "Course",
       },
     ],
