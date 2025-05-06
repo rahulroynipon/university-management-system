@@ -26,5 +26,9 @@ body {
 }
 
 .padding {
-  @apply px-7 md:px-16 lg:px-24 py-10;
+  @apply px-7 md:px-16 lg:px-32 py-10;
+}
+
+.width {
+  @apply max-w-[1550px] mx-auto;
 }

@@ -12,11 +12,7 @@
     "link": "/departments"
   },
   {
-    "name": "Faculty",
-    "link": "/faculty"
-  },
-  {
-    "name": "Contact",
-    "link": "/contact"
+    "name": "Contact Us",
+    "link": "/contact-us"
   }
 ]
