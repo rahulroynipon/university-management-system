@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Home",
+    "link": "/"
+  },
+  {
+    "name": "Dashboard",
+    "link": "/dashboard/admin"
+  },
+  {
+    "name": "Departments",
+    "link": "/departments"
+  },
+  {
+    "name": "Batches",
+    "link": "/batches"
+  },
+  {
+    "name": "Faculties",
+    "link": "/faculties"
+  },
+  {
+    "name": "Courses",
+    "link": "/courses"
+  },
+  {
+    "name": "Students",
+    "link": "/students"
+  }
+]

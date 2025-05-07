@@ -1,7 +1,5 @@
+import DashboardLayoutWrapper from "@/components/DashboardLayoutWrapper";
+
 export default function DashboardLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+  return <DashboardLayoutWrapper>{children}</DashboardLayoutWrapper>;
 }

@@ -1,5 +1,6 @@
 import dbConnect from "./dbConnect";
-import { NextResponse } from "next/server";
+import { jwtVerify } from "jose";
+import User from "@/models/user.model";
 
 const ApiResponse = (status = 200, data = null, message = "") => {
   return new Response(
@@ -31,4 +32,33 @@ const AsyncHandler = (fn) => async (req, res) => {
   }
 };
 
-export { ApiResponse, ApiError, AsyncHandler };
+const verifyToken = async (req) => {
+  const token = req.cookies.get("token");
+
+  if (!token) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const { payload } = await jwtVerify(
+      token.value,
+      new TextEncoder().encode(process.env.TOKEN_SECRET)
+    );
+
+    if (payload && payload._id) {
+      const user = await User.findById(payload._id).select("-password");
+
+      if (!user) {
+        throw new Error("Invalid token: User not found");
+      }
+
+      req.user = user;
+    } else {
+      throw new Error("Unauthorized");
+    }
+  } catch (error) {
+    throw new Error("Unauthorized");
+  }
+};
+
+export { ApiResponse, ApiError, AsyncHandler, verifyToken };

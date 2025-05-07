@@ -1,0 +1,25 @@
+import DashboardNav from "./DashboardNav";
+import Image from "next/image";
+import Link from "next/link";
+import Logo from "@/assets/logo.png";
+
+export default function DashboardLayoutWrapper({ children }) {
+  return (
+    <div className="flex h-screen">
+      <div className="w-[15rem] flex flex-col gap-7 py-7 border-r border-gray-200">
+        <div className="px-14">
+          <Link href="/">
+            <Image src={Logo} alt="City University logo" />
+          </Link>
+        </div>
+        <DashboardNav />
+      </div>
+      <div className="flex-1 h-screen overflow-y-auto">
+        <div className="sticky top-0 z-50 border-b border-gray-200 px-10 py-5 bg-white">
+          1
+        </div>
+        <main className="bg-[#fafafb] w-full px-10 py-5">{children}</main>
+      </div>
+    </div>
+  );
+}

@@ -1,14 +1,15 @@
 import updateState from "@/lib/updateState";
 import { toast } from "sonner";
 import { create } from "zustand";
-import { is } from "./../../.next/server/chunks/346";
 
 const initialState = {
+  user: false,
   login: false,
+  logout: false,
 };
 
 const useAuthStore = create((set) => ({
-  user: {},
+  user: null,
   message: { login: "" },
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
@@ -40,6 +41,55 @@ const useAuthStore = create((set) => ({
     } catch (error) {
       updateState(set, "login", { loading: false, error: true });
       toast.error(error.message || "Login failed");
+    }
+  },
+
+  logoutHandler: async () => {
+    updateState(set, "logout", { loading: true, success: false, error: false });
+    try {
+      const res = await fetch("/api/auth/logout");
+      if (res.ok) {
+        const result = await res.json();
+        updateState(set, "logout", {
+          loading: false,
+          success: true,
+          user: null,
+        });
+        toast.success(result?.message || "Logout successfully");
+      } else {
+        const errorData = await res.json();
+        updateState(set, "logout", { loading: false, error: true });
+        toast.error(errorData?.message || "Logout failed");
+      }
+    } catch (error) {
+      updateState(set, "logout", { loading: false, error: true });
+      toast.error(error.message || "Logout failed");
+    }
+  },
+
+  getUserHandler: async () => {
+    updateState(set, "getUser", {
+      loading: true,
+      success: false,
+      error: false,
+    });
+    try {
+      const res = await fetch("/api/auth/me");
+      if (res.ok) {
+        const result = await res.json();
+        updateState(set, "user", {
+          loading: false,
+          success: true,
+          user: result?.payload,
+        });
+      } else {
+        const errorData = await res.json();
+        updateState(set, "user", { loading: false, error: true });
+        toast.error(errorData?.message || "Failed to fetch user");
+      }
+    } catch (error) {
+      updateState(set, "user", { loading: false, error: true });
+      toast.error(error.message || "Failed to fetch user");
     }
   },
 }));

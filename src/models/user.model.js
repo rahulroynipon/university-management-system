@@ -33,7 +33,7 @@ const userSchema = new Schema(
 
 userSchema.methods.generateAuthToken = async function () {
   const secret = new TextEncoder().encode(process.env.TOKEN_SECRET);
-  const token = await new SignJWT({ id: this._id.toString(), role: this.role })
+  const token = await new SignJWT({ _id: this._id.toString(), role: this.role })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime(process.env.TOKEN_EXPIRE || "15d")
     .sign(secret);
