@@ -66,7 +66,7 @@ export default function Header() {
                 <li key={index}>
                   <ActiveLink
                     href={item.link}
-                    className="font-medium text-lg"
+                    className="font-medium text-lg text-nowrap"
                     activeClassName="text-red-800"
                   >
                     {item.name}

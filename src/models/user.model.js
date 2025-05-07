@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import jwt from "jsonwebtoken";
+import { SignJWT } from "jose";
 
 const userSchema = new Schema(
   {
@@ -31,14 +31,13 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign(
-    { _id: this._id, role: this.role },
-    process.env.TOKEN_SECRET,
-    {
-      expiresIn: process.env.TOKEN_EXPIRE,
-    }
-  );
+userSchema.methods.generateAuthToken = async function () {
+  const secret = new TextEncoder().encode(process.env.TOKEN_SECRET);
+  const token = await new SignJWT({ id: this._id.toString(), role: this.role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime(process.env.TOKEN_EXPIRE || "15d")
+    .sign(secret);
+
   return token;
 };
 

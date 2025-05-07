@@ -1,5 +1,6 @@
 // app/api/auth/login/route.js
 
+import { cookies } from "next/headers";
 import { ApiResponse, ApiError, AsyncHandler } from "@/lib/apiHelpers";
 import User from "@/models/user.model";
 
@@ -28,10 +29,18 @@ export const POST = AsyncHandler(async (req) => {
     ]);
   }
 
-  const token = user.generateAuthToken();
+  const token = await user.generateAuthToken();
 
   const userObj = user.toObject();
   delete userObj.password;
 
-  return ApiResponse(200, { user: userObj, token: token }, "Login successful");
+  const cookieStore = await cookies();
+  cookieStore.set("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 15,
+  });
+
+  return ApiResponse(200, null, "Login successful");
 });

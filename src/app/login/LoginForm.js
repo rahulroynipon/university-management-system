@@ -3,10 +3,11 @@
 import { Formik, Form } from "formik";
 import { loginSchema as validationSchema } from "@/schema/login.schema";
 import InputField from "@/components/ui/InputField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DropdownField from "@/components/ui/Dropdown";
 import Button from "@/components/ui/Button";
 import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const initialValues = {
@@ -15,18 +16,22 @@ export default function LoginForm() {
     role: "student",
   };
 
+  const router = useRouter();
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const { loginHandler } = useAuthStore();
+  const { loginHandler, isLoading, isSuccess } = useAuthStore();
 
   const toggleShowPassword = () => {
     setIsShowPassword(!isShowPassword);
   };
 
   const handleSubmit = async (values) => {
-    console.log(values);
+    if (isLoading.login) return;
     await loginHandler(values);
-    console.log("end");
   };
+
+  useEffect(() => {
+    isSuccess.login && router.push("/dashboard");
+  }, [isSuccess]);
 
   return (
     <Formik
@@ -65,8 +70,12 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full mt-3">
-            Login
+          <Button
+            type="submit"
+            disabled={isLoading.login}
+            className="w-full mt-3"
+          >
+            {isLoading.login ? "Loging in..." : "Login"}
           </Button>
         </Form>
       )}
