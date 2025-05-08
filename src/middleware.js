@@ -8,6 +8,7 @@ const redirectToDashboard = ({ role, _id }, req) => {
     return NextResponse.redirect(new URL(`/dashboard/teacher/${_id}`, req.url));
   if (role === "student")
     return NextResponse.redirect(new URL(`/dashboard/student/${_id}`, req.url));
+  return NextResponse.redirect(new URL("/login", req.url));
 };
 
 const handleRedirect = async (req) => {

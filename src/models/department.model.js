@@ -9,8 +9,8 @@ const departmentSchema = new Schema(
       trim: true,
     },
     icon: {
-      type: String,
-      required: [true, "Department icon is required"],
+      url: String,
+      publicId: String,
     },
     description: {
       type: String,

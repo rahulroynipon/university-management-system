@@ -9,22 +9,22 @@
   },
   {
     "name": "Departments",
-    "link": "/departments"
+    "link": "/dashboard/admin/departments"
   },
   {
     "name": "Batches",
-    "link": "/batches"
+    "link": "/dashboard/admin/batches"
   },
   {
     "name": "Faculties",
-    "link": "/faculties"
+    "link": "/dashboard/admin/faculties"
   },
   {
     "name": "Courses",
-    "link": "/courses"
+    "link": "/dashboard/admin/courses"
   },
   {
     "name": "Students",
-    "link": "/students"
+    "link": "/dashboard/admin/students"
   }
 ]

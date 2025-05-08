@@ -46,13 +46,13 @@ const verifyToken = async (req) => {
     );
 
     if (payload && payload._id) {
-      const user = await User.findById(payload._id).select("-password");
+      const user = await User.findById(payload._id).select("_id");
 
       if (!user) {
         throw new Error("Invalid token: User not found");
       }
 
-      req.user = user;
+      req.userId = user._id;
     } else {
       throw new Error("Unauthorized");
     }

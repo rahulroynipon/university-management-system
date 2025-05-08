@@ -12,8 +12,7 @@ import useAuthStore from "@/store/authStore";
 export default function DashboardNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const { logoutHandler, getUserHandler, isSuccess, isLoading } =
-    useAuthStore();
+  const { logoutHandler, isSuccess, isLoading } = useAuthStore();
 
   const role = useMemo(() => {
     const segments = pathname.split("/");
@@ -39,10 +38,6 @@ export default function DashboardNav() {
       router.push("/login");
     }
   }, [isSuccess]);
-
-  useEffect(async () => {
-    await getUserHandler();
-  }, []);
 
   return (
     <nav className="h-full flex flex-col justify-between">

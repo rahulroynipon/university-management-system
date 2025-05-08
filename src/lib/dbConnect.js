@@ -28,7 +28,7 @@ export default async function dbConnect() {
       console.log("Connected to MongoDB");
       const adminExist = await User.findOne({ email: process.env.ADMIN_EMAIL });
       if (!adminExist) {
-        await User.create(initializeAdmin());
+        await User.create(await initializeAdmin());
         console.log("Admin created");
       }
     } else {
@@ -36,6 +36,6 @@ export default async function dbConnect() {
     }
   } catch (error) {
     console.error("Database connection failed:", error.message);
-    process.exit(1);
+    throw new Error("Database connection failed");
   }
 }

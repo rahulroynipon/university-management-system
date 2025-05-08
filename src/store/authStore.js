@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const useAuthStore = create((set) => ({
-  user: null,
+  user: {},
   message: { login: "" },
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
@@ -77,10 +77,11 @@ const useAuthStore = create((set) => ({
       const res = await fetch("/api/auth/me");
       if (res.ok) {
         const result = await res.json();
+
         updateState(set, "user", {
           loading: false,
           success: true,
-          user: result?.payload,
+          update: { user: result?.payload },
         });
       } else {
         const errorData = await res.json();
