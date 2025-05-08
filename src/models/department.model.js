@@ -3,6 +3,10 @@ import slugify from "slugify";
 
 const departmentSchema = new Schema(
   {
+    slug: {
+      type: String,
+      unique: true,
+    },
     name: {
       type: String,
       required: [true, "Department name is required"],
@@ -22,9 +26,9 @@ const departmentSchema = new Schema(
   }
 );
 
-batchSchema.pre("validate", function (next) {
-  if (!this._id || this.isModified("name")) {
-    this._id = slugify(this.name, { lower: true, strict: true });
+departmentSchema.pre("validate", function (next) {
+  if (!this.slug || this.isModified("name")) {
+    this.slug = slugify(this.name, { lower: true, strict: true });
   }
   next();
 });

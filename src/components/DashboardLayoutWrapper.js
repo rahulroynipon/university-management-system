@@ -7,7 +7,7 @@ import DrawerLabel from "./DrawerLabel";
 
 export default function DashboardLayoutWrapper({ children }) {
   return (
-    <div className="flex h-screen">
+    <div className="flex shrink-0 h-screen overflow-hidden min-w-[1100px]">
       <div className="w-[15rem] flex flex-col gap-7 py-7 border-r border-gray-200">
         <div className="px-14">
           <Link href="/">

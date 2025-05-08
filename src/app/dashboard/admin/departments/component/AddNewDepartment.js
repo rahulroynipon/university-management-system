@@ -5,9 +5,10 @@ import Button from "@/components/ui/Button";
 import InputField from "@/components/ui/InputField";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { departmentSchema as validationSchema } from "@/schema/department.schema";
 import ImageInputField from "@/components/ui/ImageInputField";
+import useDepartmentStore from "@/store/departmentStore";
 
 export default function AddNewDepartment() {
   const initialValues = {
@@ -16,6 +17,7 @@ export default function AddNewDepartment() {
     icon: "",
   };
 
+  const { addDepartmentHandler, isLoading, isSuccess } = useDepartmentStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = () => {
@@ -25,6 +27,17 @@ export default function AddNewDepartment() {
   const onClose = () => {
     setIsOpen(false);
   };
+
+  const handleSubmit = async (values) => {
+    if (isLoading.create) return;
+    await addDepartmentHandler(values);
+  };
+
+  useEffect(() => {
+    if (isSuccess.create) {
+      onClose();
+    }
+  }, [isSuccess]);
 
   return (
     <div>
@@ -44,6 +57,7 @@ export default function AddNewDepartment() {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          onSubmit={handleSubmit}
         >
           {() => (
             <Form className="space-y-3 mt-5">
@@ -69,8 +83,12 @@ export default function AddNewDepartment() {
                   Cancel
                 </Button>
 
-                <Button type="submit" className="rounded-none text-sm">
-                  Save
+                <Button
+                  type="submit"
+                  className="rounded-none text-sm"
+                  disabled={isLoading.create}
+                >
+                  {isLoading.create ? "Creating..." : "Create"}
                 </Button>
               </div>
             </Form>

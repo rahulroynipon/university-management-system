@@ -10,7 +10,6 @@ const initialState = {
 
 const useAuthStore = create((set) => ({
   user: {},
-  message: { login: "" },
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
   isError: { ...initialState },

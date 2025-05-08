@@ -46,13 +46,14 @@ const verifyToken = async (req) => {
     );
 
     if (payload && payload._id) {
-      const user = await User.findById(payload._id).select("_id");
+      const user = await User.findById(payload._id).select("_id role");
 
       if (!user) {
         throw new Error("Invalid token: User not found");
       }
 
       req.userId = user._id;
+      req.userRole = user.role;
     } else {
       throw new Error("Unauthorized");
     }
@@ -61,4 +62,15 @@ const verifyToken = async (req) => {
   }
 };
 
-export { ApiResponse, ApiError, AsyncHandler, verifyToken };
+const authorizeRole = async (req, allowedRoles) => {
+  try {
+    await verifyToken(req);
+    if (!allowedRoles.includes(req.userRole)) {
+      throw new Error("Unauthorized");
+    }
+  } catch (error) {
+    throw new Error("Unauthorized");
+  }
+};
+
+export { ApiResponse, ApiError, AsyncHandler, verifyToken, authorizeRole };

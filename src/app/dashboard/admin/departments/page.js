@@ -1,5 +1,3 @@
-"use client";
-
 import { TableHeader } from "@/components/Table";
 import AddNewDepartment from "./component/AddNewDepartment";
 
