@@ -1,27 +1,32 @@
 "use client";
 
-import Modal from "@/components/Modal";
-import Button from "@/components/ui/Button";
-import InputField from "@/components/ui/InputField";
-import TextAreaField from "@/components/ui/TextAreaField";
-import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { departmentSchema as validationSchema } from "@/schema/department.schema";
-import ImageInputField from "@/components/ui/ImageInputField";
-import useDepartmentStore from "@/store/departmentStore";
+import Button from "@/components/ui/Button";
+import Modal from "@/components/Modal";
+import { batchSchema as validationSchema } from "@/schema/batch.schema";
+import { Form, Formik } from "formik";
+import InputField from "@/components/ui/InputField";
+import useBatchStore from "@/store/batchStore";
+import DropdownField from "@/components/ui/Dropdown";
 
-export default function AddNewDepartment() {
+export default function AddNewBatch() {
   const initialValues = {
     name: "",
-    description: "",
-    icon: "",
+    department: "",
   };
 
-  const { addDepartmentHandler, isLoading, isSuccess, departments } =
-    useDepartmentStore();
+  const {
+    getOptionsHandler,
+    addBatchHandler,
+    isLoading,
+    isSuccess,
+    isError,
+    options,
+    batches,
+  } = useBatchStore();
   const [isOpen, setIsOpen] = useState(false);
 
-  const onOpen = () => {
+  const onOpen = async () => {
     setIsOpen(true);
   };
 
@@ -30,9 +35,16 @@ export default function AddNewDepartment() {
   };
 
   const handleSubmit = async (values) => {
-    if (isLoading.create) return;
-    await addDepartmentHandler(values);
+    if (isLoading.create && !isError.create) return;
+    await addBatchHandler(values);
   };
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      await getOptionsHandler();
+    };
+    fetchOptions();
+  }, []);
 
   useEffect(() => {
     if (isSuccess.create) {
@@ -44,17 +56,20 @@ export default function AddNewDepartment() {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-bold italic">
-          Departments <span>{departments?.length || 0} </span>
+          Batches <span>{batches?.length || 0} </span>
         </h1>
-        <Button
-          onClick={onOpen}
-          className="rounded-none mb-3 bg-transparent border border-red-700 text-red-700 hover:bg-red-700 text-sm hover:text-white"
-        >
-          Add New
-        </Button>
+
+        <div>
+          <Button
+            onClick={onOpen}
+            className="rounded-none mb-3 bg-transparent border border-red-700 text-red-700 hover:bg-red-700 text-sm hover:text-white"
+          >
+            Add New
+          </Button>
+        </div>
       </div>
 
-      <Modal isOpen={isOpen} onClose={onClose} title="Add New Department">
+      <Modal title="Add New Batch" isOpen={isOpen} onClose={onClose}>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -63,16 +78,11 @@ export default function AddNewDepartment() {
           {() => (
             <Form className="space-y-3 mt-5">
               <InputField name="name" label="Name" className="bg-gray-100" />
-              <TextAreaField
-                name="description"
-                label="Description"
-                className="bg-gray-100"
-              />
 
-              <ImageInputField
-                name="icon"
-                label="Icon"
-                className="bg-gray-100"
+              <DropdownField
+                name="department"
+                label="Department"
+                options={options}
               />
 
               <div className="flex justify-end mt-5">
@@ -86,8 +96,8 @@ export default function AddNewDepartment() {
 
                 <Button
                   type="submit"
-                  className="rounded-none text-sm"
                   disabled={isLoading.create}
+                  className="rounded-none text-sm"
                 >
                   {isLoading.create ? "Creating..." : "Create"}
                 </Button>

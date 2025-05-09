@@ -5,12 +5,11 @@ const batchSchema = new Schema(
     name: {
       type: String,
       required: [true, "Batch name is required"],
-      unique: true,
       trim: true,
     },
     year: {
       type: Number,
-      required: [true, "Batch year is required"],
+      default: new Date().getFullYear(),
     },
     department: {
       type: Schema.Types.ObjectId,
@@ -19,13 +18,28 @@ const batchSchema = new Schema(
     },
     number: {
       type: Number,
-      required: [true, "Batch number is required"],
+    },
+    public: {
+      type: Boolean,
+      default: true,
     },
   },
   {
     timestamps: true,
   }
 );
+
+batchSchema.pre("save", async function (next) {
+  if (!this.isNew) return next();
+
+  const count = await mongoose.models.Batch.countDocuments({
+    department: this.department,
+  });
+
+  this.number = count + 1;
+
+  next();
+});
 
 const Batch = mongoose.models.Batch || mongoose.model("Batch", batchSchema);
 export default Batch;

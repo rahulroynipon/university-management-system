@@ -4,10 +4,12 @@ import { toast } from "sonner";
 
 const initialState = {
   create: false,
+  get: false,
+  delete: false,
 };
 
 const useDepartmentStore = create((set) => ({
-  department: [],
+  departments: [],
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
   isError: { ...initialState },
@@ -30,7 +32,7 @@ const useDepartmentStore = create((set) => ({
         updateState(set, "create", { loading: false, success: true });
 
         set((state) => ({
-          department: [...state.department, result?.payload],
+          departments: [result?.payload, ...state.departments],
         }));
 
         toast.success(result?.message || "Department created successfully");
@@ -42,6 +44,68 @@ const useDepartmentStore = create((set) => ({
     } catch (error) {
       updateState(set, "create", { loading: false, error: true });
       toast.error(error.message || "Failed to create department");
+    }
+  },
+
+  getDepartmentsHandler: async () => {
+    updateState(set, "get", {
+      loading: true,
+      success: false,
+      error: false,
+    });
+    try {
+      const res = await fetch("/api/admin/department");
+      if (res.ok) {
+        const result = await res.json();
+        updateState(set, "get", { loading: false, success: true });
+        set({ departments: result?.payload });
+      } else {
+        const errorData = await res.json();
+        updateState(set, "get", { loading: false, error: true });
+        toast.error(errorData?.message || "Failed to get departments");
+      }
+    } catch (error) {
+      updateState(set, "get", { loading: false, error: true });
+      toast.error(error.message || "Failed to get departments");
+    }
+  },
+
+  removeDepartmentHandler: async (id) => {
+    updateState(set, "delete", {
+      loading: true,
+      success: false,
+      error: false,
+    });
+
+    try {
+      const res = await fetch("/api/admin/department", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        const updatedDept = result.payload;
+
+        updateState(set, "delete", { loading: false, success: true });
+
+        set((state) => ({
+          departments: state.departments.map((department) =>
+            department._id === updatedDept._id ? updatedDept : department
+          ),
+        }));
+
+        toast.success(
+          result?.message || "Department status updated successfully"
+        );
+      } else {
+        const errorData = await res.json();
+        updateState(set, "delete", { loading: false, error: true });
+        toast.error(errorData?.message || "Failed to update department status");
+      }
+    } catch (error) {
+      updateState(set, "delete", { loading: false, error: true });
+      toast.error(error.message || "Failed to update department status");
     }
   },
 }));

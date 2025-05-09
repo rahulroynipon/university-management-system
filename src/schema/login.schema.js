@@ -12,3 +12,4 @@ export const loginSchema = Yup.object().shape({
     )
     .default("student"),
 });
+

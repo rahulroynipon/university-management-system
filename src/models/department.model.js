@@ -20,6 +20,10 @@ const departmentSchema = new Schema(
       type: String,
       required: [true, "Department description is required"],
     },
+    public: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

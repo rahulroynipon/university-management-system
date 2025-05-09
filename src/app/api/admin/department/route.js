@@ -50,3 +50,39 @@ export const POST = AsyncHandler(async (req) => {
 
   return ApiResponse(201, department, "Department created successfully");
 });
+
+export const GET = AsyncHandler(async (req) => {
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
+
+  if (type == "options") {
+    const departments = await Department.find({ public: true }).select(
+      "name _id"
+    );
+    const options = departments.map((dept) => ({
+      label: dept.name,
+      value: dept._id,
+    }));
+    return ApiResponse(200, options, "Departments fetched successfully");
+  }
+
+  const departments = await Department.find({}).sort({
+    createdAt: -1,
+  });
+  return ApiResponse(200, departments, "Departments fetched successfully");
+});
+
+export const DELETE = AsyncHandler(async (req) => {
+  await authorizeRole(req, ["admin"]);
+
+  const { id } = await req.json();
+  if (!id) return ApiError(400, "Id is required");
+
+  const department = await Department.findById(id);
+  if (!department) return ApiError(404, "Department not found");
+
+  department.public = !department.public;
+  await department.save();
+
+  return ApiResponse(200, department, "Department status updated successfully");
+});
