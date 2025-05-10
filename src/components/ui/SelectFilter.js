@@ -1,14 +1,12 @@
 const SelectFilter = ({
   options = [],
-  value = "",
   onChange,
   className = "",
   placeholder = "All",
 }) => {
   return (
     <select
-      className={`p-2.5 border border-gray-300 text-sm focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 ${className}`}
-      value={value}
+      className={`p-2.5 cursor-pointer border border-gray-300 text-sm focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 ${className}`}
       onChange={onChange}
     >
       <option value="">{placeholder}</option>

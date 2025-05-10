@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button";
 function BatchTable() {
   const {
     batches,
-    filter,
+    filterBatches,
     getBatchesHandler,
     removeBatchHandler,
     isLoading,
@@ -34,11 +34,6 @@ function BatchTable() {
     await removeBatchHandler(selectedBatch?._id);
     onCloseDelete();
   };
-
-  const filterData = useMemo(() => {
-    if (!filter) return batches;
-    return batches.filter((batch) => batch.department?._id === filter);
-  }, [filter, batches, isLoading.get]);
 
   useEffect(() => {
     const fetchBatches = async () => {
@@ -99,7 +94,7 @@ function BatchTable() {
           "Status",
           "Actions",
         ]}
-        data={filterData}
+        data={filterBatches}
         isLoading={isLoading.get}
         renderRow={renderRow}
       />

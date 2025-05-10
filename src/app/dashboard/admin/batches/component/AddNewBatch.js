@@ -24,8 +24,8 @@ export default function AddNewBatch() {
     isError,
     options,
     batches,
-    filter,
-    updateFilter,
+    filterBatchesHandler,
+    filterBatches,
   } = useBatchStore();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,6 +50,10 @@ export default function AddNewBatch() {
   }, []);
 
   useEffect(() => {
+    filterBatchesHandler();
+  }, [batches]);
+
+  useEffect(() => {
     if (isSuccess.create) {
       onClose();
     }
@@ -59,14 +63,16 @@ export default function AddNewBatch() {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-bold italic">
-          Total Batches <span>{batches?.length || 0} </span>
+          Total Batches{" "}
+          <span>
+            { filterBatches?.length }{" "}
+          </span>
         </h1>
 
         <div className="space-x-3">
           <SelectFilter
             options={options}
-            value={filter}
-            onChange={(e) => updateFilter(e.target.value)}
+            onChange={(e) => filterBatchesHandler(e.target.value)}
             placeholder="Filter by department"
           />
 

@@ -12,7 +12,7 @@ const initialState = {
 const useBatchStore = create((set, get) => ({
   batches: [],
   options: [],
-  filter: "",
+  filterBatches: [],
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
   isError: { ...initialState },
@@ -120,7 +120,14 @@ const useBatchStore = create((set, get) => ({
     }
   },
 
-  updateFilter: (filter) => set({ filter }),
+  filterBatchesHandler: (filterId) => {
+    if (!filterId) return set({ filterBatches: get().batches });
+    const batches = get().batches;
+    const filteredBatches = batches.filter(
+      (batch) => batch.department._id === filterId
+    );
+    set({ filterBatches: filteredBatches });
+  },
 }));
 
 export default useBatchStore;
