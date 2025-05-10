@@ -7,9 +7,8 @@ export const loginSchema = Yup.object().shape({
     .required("Password is required"),
   role: Yup.string()
     .oneOf(
-      ["admin", "student", "teacher"],
+      ["admin", "student", "faculty"],
       "Role must be one of 'admin', 'student', or 'teacher'"
     )
     .default("student"),
 });
-

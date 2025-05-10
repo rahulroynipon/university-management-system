@@ -48,7 +48,7 @@ export default function LoginForm() {
             options={[
               { label: "Admin", value: "admin" },
               { label: "Student", value: "student" },
-              { label: "Teacher", value: "teacher" },
+              { label: "Faculty", value: "faculty" },
             ]}
           />
           <div className="space-y-2">

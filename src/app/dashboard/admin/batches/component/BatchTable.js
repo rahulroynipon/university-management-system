@@ -9,7 +9,6 @@ import Button from "@/components/ui/Button";
 
 function BatchTable() {
   const {
-    batches,
     filterBatches,
     getBatchesHandler,
     removeBatchHandler,

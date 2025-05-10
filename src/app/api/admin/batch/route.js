@@ -1,7 +1,14 @@
-import { AsyncHandler, ApiError, ApiResponse } from "@/lib/apiHelpers";
+import {
+  AsyncHandler,
+  ApiError,
+  ApiResponse,
+  authorizeRole,
+} from "@/lib/apiHelpers";
 import Batch from "@/models/batch.model";
 
 export const POST = AsyncHandler(async (req) => {
+  await authorizeRole(req, ["admin"]);
+
   const { name, department } = await req.json();
 
   const errors = [];
@@ -34,6 +41,8 @@ export const GET = AsyncHandler(async (req) => {
 });
 
 export const DELETE = AsyncHandler(async (req) => {
+  await authorizeRole(req, ["admin"]);
+
   const { id } = await req.json();
   if (!id) return ApiError(400, "Id is required");
 

@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import User from "./user.model.js";
+import Department from "./department.model.js";
 
 const studentSchema = new Schema(
   {

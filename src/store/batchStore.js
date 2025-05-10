@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { toast } from "sonner";
 
 const initialState = {
-  option: false,
   create: false,
   get: false,
   delete: false,
@@ -11,30 +10,11 @@ const initialState = {
 
 const useBatchStore = create((set, get) => ({
   batches: [],
-  options: [],
   filterBatches: [],
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
   isError: { ...initialState },
 
-  getOptionsHandler: async () => {
-    updateState(set, "option", { loading: true, success: false, error: false });
-    try {
-      const res = await fetch("/api/admin/department?type=options");
-      if (res.ok) {
-        const result = await res.json();
-        updateState(set, "option", { loading: false, success: true });
-        set({ options: result?.payload });
-      } else {
-        const errorData = await res.json();
-        updateState(set, "option", { loading: false, error: true });
-        toast.error(errorData?.message || "Failed to get options");
-      }
-    } catch (error) {
-      updateState(set, "option", { loading: false, error: true });
-      toast.error(error.message || "Failed to get options");
-    }
-  },
 
   addBatchHandler: async (data) => {
     updateState(set, "create", { loading: true, success: false, error: false });

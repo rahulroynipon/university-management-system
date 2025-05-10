@@ -11,7 +11,6 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -26,7 +25,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "student", "teacher"],
+      enum: ["admin", "student", "faculty"],
       default: "student",
     },
   },
@@ -34,6 +33,8 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+
+userSchema.index({ email: 1, role: 1 }, { unique: true });
 
 userSchema.methods.generateAuthToken = async function () {
   const secret = new TextEncoder().encode(process.env.TOKEN_SECRET);

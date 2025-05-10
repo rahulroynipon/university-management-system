@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import User from "./user.model.js";
+import Department from "./department.model.js";
 
-const teacherSchema = new Schema(
+const facultySchema = new Schema(
   {
     rank: {
       type: String,
@@ -13,7 +14,11 @@ const teacherSchema = new Schema(
       ],
       default: "lecturer",
     },
-    departmentId: {
+    description: {
+      type: String,
+      required: [true, "Description is required"],
+    },
+    department: {
       type: Schema.Types.ObjectId,
       ref: "Department",
       required: [true, "Department ID is required"],
@@ -30,7 +35,7 @@ const teacherSchema = new Schema(
   }
 );
 
-const Teacher =
-  mongoose.models.Teacher || User.discriminator("Teacher", teacherSchema);
+const Faculty =
+  mongoose.models.Faculty || User.discriminator("Faculty", facultySchema);
 
-export default Teacher;
+export default Faculty;

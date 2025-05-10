@@ -9,6 +9,7 @@ import InputField from "@/components/ui/InputField";
 import useBatchStore from "@/store/batchStore";
 import DropdownField from "@/components/ui/Dropdown";
 import SelectFilter from "@/components/ui/SelectFilter";
+import useOptionStore from "@/store/optionStore";
 
 export default function AddNewBatch() {
   const initialValues = {
@@ -17,16 +18,16 @@ export default function AddNewBatch() {
   };
 
   const {
-    getOptionsHandler,
     addBatchHandler,
     isLoading,
     isSuccess,
     isError,
-    options,
     batches,
     filterBatchesHandler,
     filterBatches,
   } = useBatchStore();
+
+  const { getDeptOptionsHandler, deptOptions } = useOptionStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = async () => {
@@ -44,7 +45,7 @@ export default function AddNewBatch() {
 
   useEffect(() => {
     const fetchOptions = async () => {
-      await getOptionsHandler();
+      await getDeptOptionsHandler();
     };
     fetchOptions();
   }, []);
@@ -63,15 +64,12 @@ export default function AddNewBatch() {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-bold italic">
-          Total Batches{" "}
-          <span>
-            { filterBatches?.length }{" "}
-          </span>
+          Total Batches <span>{filterBatches.length} </span>
         </h1>
 
         <div className="space-x-3">
           <SelectFilter
-            options={options}
+            options={deptOptions}
             onChange={(e) => filterBatchesHandler(e.target.value)}
             placeholder="Filter by department"
           />
@@ -98,7 +96,8 @@ export default function AddNewBatch() {
               <DropdownField
                 name="department"
                 label="Department"
-                options={options?.filter((option) => option.public)}
+                options={deptOptions?.filter((option) => option.public)}
+                className="bg-gray-100"
               />
 
               <div className="flex justify-end mt-5">
