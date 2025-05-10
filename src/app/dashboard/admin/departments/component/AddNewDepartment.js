@@ -44,7 +44,7 @@ export default function AddNewDepartment() {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-bold italic">
-          Departments <span>{departments?.length || 0} </span>
+          Total Departments <span>{departments?.length || 0} </span>
         </h1>
         <Button
           onClick={onOpen}

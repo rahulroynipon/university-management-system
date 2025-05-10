@@ -3,13 +3,19 @@
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import useBatchStore from "@/store/batchStore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RiExchange2Line } from "react-icons/ri";
 import Button from "@/components/ui/Button";
 
 function BatchTable() {
-  const { batches, getBatchesHandler, removeBatchHandler, isLoading, isError } =
-    useBatchStore();
+  const {
+    batches,
+    filter,
+    getBatchesHandler,
+    removeBatchHandler,
+    isLoading,
+    isError,
+  } = useBatchStore();
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
@@ -28,6 +34,11 @@ function BatchTable() {
     await removeBatchHandler(selectedBatch?._id);
     onCloseDelete();
   };
+
+  const filterData = useMemo(() => {
+    if (!filter) return batches;
+    return batches.filter((batch) => batch.department?._id === filter);
+  }, [filter, batches, isLoading.get]);
 
   useEffect(() => {
     const fetchBatches = async () => {
@@ -88,7 +99,7 @@ function BatchTable() {
           "Status",
           "Actions",
         ]}
-        data={batches}
+        data={filterData}
         isLoading={isLoading.get}
         renderRow={renderRow}
       />

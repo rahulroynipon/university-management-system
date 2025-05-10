@@ -6,6 +6,7 @@ import {
 } from "@/lib/apiHelpers";
 import Department from "@/models/department.model";
 import { UploadToCloudinary } from "@/lib/Cloudinary";
+import Batch from "@/models/batch.model";
 
 export const POST = AsyncHandler(async (req) => {
   await authorizeRole(req, ["admin"]);
@@ -56,12 +57,11 @@ export const GET = AsyncHandler(async (req) => {
   const type = searchParams.get("type");
 
   if (type == "options") {
-    const departments = await Department.find({ public: true }).select(
-      "name _id"
-    );
+    const departments = await Department.find({}).select("name _id public");
     const options = departments.map((dept) => ({
       label: dept.name,
       value: dept._id,
+      public: dept.public,
     }));
     return ApiResponse(200, options, "Departments fetched successfully");
   }
@@ -80,9 +80,13 @@ export const DELETE = AsyncHandler(async (req) => {
 
   const department = await Department.findById(id);
   if (!department) return ApiError(404, "Department not found");
-
-  department.public = !department.public;
+  const newStatus = !department.public;
+  department.public = newStatus;
   await department.save();
+
+  if (!newStatus) {
+    await Batch.updateMany({ department: id, public: true }, { public: false });
+  }
 
   return ApiResponse(200, department, "Department status updated successfully");
 });

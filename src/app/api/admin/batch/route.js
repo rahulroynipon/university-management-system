@@ -37,8 +37,15 @@ export const DELETE = AsyncHandler(async (req) => {
   const { id } = await req.json();
   if (!id) return ApiError(400, "Id is required");
 
-  const batch = await Batch.findById(id);
+  const batch = await Batch.findById(id).populate("department", "public");
   if (!batch) return ApiError(404, "Batch not found");
+
+  if (!batch.department.public) {
+    return ApiError(
+      400,
+      "You can't public this batch because department is private"
+    );
+  }
 
   batch.public = !batch.public;
   await batch.save();

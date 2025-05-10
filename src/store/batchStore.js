@@ -9,9 +9,10 @@ const initialState = {
   delete: false,
 };
 
-const useBatchStore = create((set) => ({
+const useBatchStore = create((set, get) => ({
   batches: [],
   options: [],
+  filter: "",
   isLoading: { ...initialState },
   isSuccess: { ...initialState },
   isError: { ...initialState },
@@ -118,6 +119,8 @@ const useBatchStore = create((set) => ({
       toast.error(error.message || "Failed to delete batch");
     }
   },
+
+  updateFilter: (filter) => set({ filter }),
 }));
 
 export default useBatchStore;

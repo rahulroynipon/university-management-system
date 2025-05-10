@@ -8,6 +8,7 @@ import { Form, Formik } from "formik";
 import InputField from "@/components/ui/InputField";
 import useBatchStore from "@/store/batchStore";
 import DropdownField from "@/components/ui/Dropdown";
+import SelectFilter from "@/components/ui/SelectFilter";
 
 export default function AddNewBatch() {
   const initialValues = {
@@ -23,6 +24,8 @@ export default function AddNewBatch() {
     isError,
     options,
     batches,
+    filter,
+    updateFilter,
   } = useBatchStore();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -56,10 +59,17 @@ export default function AddNewBatch() {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-bold italic">
-          Batches <span>{batches?.length || 0} </span>
+          Total Batches <span>{batches?.length || 0} </span>
         </h1>
 
-        <div>
+        <div className="space-x-3">
+          <SelectFilter
+            options={options}
+            value={filter}
+            onChange={(e) => updateFilter(e.target.value)}
+            placeholder="Filter by department"
+          />
+
           <Button
             onClick={onOpen}
             className="rounded-none mb-3 bg-transparent border border-red-700 text-red-700 hover:bg-red-700 text-sm hover:text-white"
@@ -82,7 +92,7 @@ export default function AddNewBatch() {
               <DropdownField
                 name="department"
                 label="Department"
-                options={options}
+                options={options?.filter((option) => option.public)}
               />
 
               <div className="flex justify-end mt-5">
