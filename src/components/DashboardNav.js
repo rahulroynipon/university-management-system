@@ -40,7 +40,7 @@ export default function DashboardNav() {
   }, [isSuccess]);
 
   return (
-    <nav className="h-full flex flex-col justify-between">
+    <nav className="h-full  overflow-y-auto flex flex-col justify-between">
       <ul>
         {navItems?.map((item, index) => (
           <li key={index}>

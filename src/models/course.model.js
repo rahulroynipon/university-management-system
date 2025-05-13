@@ -17,13 +17,14 @@ const courseSchema = new Schema(
       type: Number,
       required: [true, "Course credits are required"],
     },
-    departmentId: {
+    department: {
       type: Schema.Types.ObjectId,
       ref: "Department",
       required: [true, "Department ID is required"],
     },
-    description: {
-      type: String,
+    public: {
+      type: Boolean,
+      default: true,
     },
   },
   {

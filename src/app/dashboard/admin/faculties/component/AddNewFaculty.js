@@ -48,7 +48,6 @@ function AddNewFaculty() {
     searchFacultiesHandler,
     faculties,
     isLoading,
-    isSuccess,
     isError,
   } = useFacultyStore();
   const { getDeptOptionsHandler, deptOptions } = useOptionStore();

@@ -30,6 +30,15 @@ export const POST = AsyncHandler(async (req) => {
     return ApiError(400, "Faculty already exists");
   }
 
+  if (rank == "head of department") {
+    const headOfDepartment = await Faculty.findOne({
+      rank: "head of department",
+    });
+    if (headOfDepartment) {
+      return ApiError(400, "Head of department already exists");
+    }
+  }
+
   const avatar = await GenerateAvatarUrl(name);
   const password = Math.floor(100000 + Math.random() * 900000).toString();
 
